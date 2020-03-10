@@ -12,7 +12,7 @@
  # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  # See the License for the specific language governing permissions and
  # limitations under the License.
- ## 
+ ##
 
 STANDALONE_TOOLCHAIN ?= $(HOME)/src/android-ndk-r11c/sysroot-arm/bin
 
@@ -47,7 +47,7 @@ clean:
 
 upload:
 	scp rh-test vvdveen.com:/home/vvdveen/www/drammer/rh-test
-	
+
 
 reboot:
 	adb reboot

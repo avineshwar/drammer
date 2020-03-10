@@ -72,7 +72,7 @@ invoke it from the shell directly:
 
 The native binary provides a number of command line options:
 
-- _-a_  
+- _-a_
   Do templating with all patterns. Without this option, only the patterns _010_
   and _101_ are used, meaning that we hammer each row twice: once with it's
   aggressor rows containing all zeros while the victim row holds only ones, and
@@ -82,11 +82,11 @@ The native binary provides a number of command line options:
   _r00_, _r0r_, _rr0_, _rrr_ (where _r_ is random and changed every 100
   iterations).
 
-* _-c <number>_  
+* _-c <number>_
   Number of memory accesses per hammer round, defaults to 1000000. It is said
   that 2500000 yields the most flips.
 
-* _-d <seconds>_  
+* _-d <seconds>_
   Number of seconds to run 'defrag' (disabled by default). This tricks the
   system into freeing more ION memory that can be used for templating. Since
   Android tries to keep as many background processes in memory as possible, the
@@ -94,7 +94,7 @@ The native binary provides a number of command line options:
   memory is either in use, or cached in the operating system). By allocating
   many ION chunks, this option forces Android's low memory killer to kill
   background processes, giving us more (contiguous) memory to hammer in the
-  templating phase.  
+  templating phase.
   Use this option with caution: setting it too high likely hangs your device and
   trigger a reboot. My advice is to first try without _-d_ (or with _-d0_), see
   how much memory you get, if not enough, hit `CTRL^C`, and restart with _-d3_.
@@ -104,21 +104,21 @@ The native binary provides a number of command line options:
   Nexus 5, that comes with 2GB of memory, you should be able to get 400 to 600
   MB of ION memory.
 
-* _-f <file path>_  
+* _-f <file path>_
   Write results not only to stdout but also to this file.
 
-* _-h_  
+* _-h_
   Dump the help screen.
 
-* _-i_  
+* _-i_
   Run an ION heap-type detector function.
 
-* _-q <cpu>_  
+* _-q <cpu>_
   Pin the program to this CPU. Some big.LITTLE architectures require you to pin
   the program to a big core, to make sure memory accesses are as fast as
   possible.
 
-* _-r <bytes>_  
+* _-r <bytes>_
   The rowsize in bytes. If this value is not provided, the program tries to find
   it using a timing side-channel (described in the paper) which may not always
   work. The most common value seems to be 65536 (64KB).
@@ -126,7 +126,7 @@ The native binary provides a number of command line options:
 * _-s_ Hammer more conservatively. By default, we hammer each page, but this
   option moves less bytes (currently set to 64 bytes).
 
-* _-t <seconds>_  
+* _-t <seconds>_
   Stop hammering after this many seconds. The default behavior is to hammer all
   memory that we were able to allocate.
 
@@ -140,13 +140,13 @@ nanoseconds).
 
 What follows is a short description of all source files.
 
-- _Makefile_  
+- _Makefile_
   Build system.
 
-- _helper.h_  
+- _helper.h_
   Inline helper functions defined in a header file.
 
-- _ion.cc_ and _ion.h_  
+- _ion.cc_ and _ion.h_
   Implements all ION related functionality: allocate, share, and free. By using
   a custom _ION data_ data structure defined in ion.h, we also provide some
   functions on top of these core ION ionctls: bulk (bulk allocations), mmap,
@@ -155,19 +155,19 @@ What follows is a short description of all source files.
   file and reads /proc/cpuinfo to determine which ION heap to use. Note that the
   latter functionality is likely incomplete.
 
-- _massage.cc_ and _massage.h_  
+- _massage.cc_ and _massage.h_
   Implements exhaust (used for exhausting ION chunks: allocate until nothing is
   left) and defrag functions.
 
-- _rh-test.cc_  
+- _rh-test.cc_
   Implements main() and is in charge of parsing the command line options and
   starting a template session.
 
-- _rowsize.cc_ and _rowsize.h_  
+- _rowsize.cc_ and _rowsize.h_
   Implements the auto detect function for finding the rowsize (described in more
   detail in the paper, Sections 5.1 and 8.1, and Figure 3)
 
-- _templating.cc_ and _templating.h_  
+- _templating.cc_ and _templating.h_
   Implements the actual Rowhammer test and builds template_t data structures
   (defined in templating.h, which might include some redundant fields). The
   is_exploitable() function checks whether a given template is in fact
