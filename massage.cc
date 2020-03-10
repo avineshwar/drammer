@@ -57,16 +57,18 @@ size_t read_meminfo(std::string type) {
     }
     return 0;
 }
-size_t get_LowFree(void) { return read_meminfo("LowFree"); }
+size_t get_LowFree(void) {
+    return read_meminfo("LowFree");
+}
 
-int exhaust(std::vector<struct ion_data *> &chunks, int min_bytes, bool mmap) { 
+int exhaust(std::vector<struct ion_data *> &chunks, int min_bytes, bool mmap) {
     int total_kb;
 
     total_kb = 0;
     for (int order = MAX_ORDER; order >= B_TO_ORDER(min_bytes); order--) {
         int count = ION_bulk(ORDER_TO_B(order), chunks, 0, mmap);
-        print("[EXHAUST] - order %2d (%4d KB) - got %3d chunks\n", 
-                    order, ORDER_TO_KB(order), count);
+        print("[EXHAUST] - order %2d (%4d KB) - got %3d chunks\n",
+              order, ORDER_TO_KB(order), count);
         total_kb += ORDER_TO_KB(order) * count;
 
         if (lowmem) break;
@@ -87,7 +89,7 @@ int exhaust(std::vector<struct ion_data *> &chunks, int min_bytes, bool mmap) {
 
 /* stop defrag when none of the last <INTERVAL> allocations yield more than MIN_COUNT blocks */
 #define INTERVAL 10
-#define MIN_COUNT 10 
+#define MIN_COUNT 10
 
 /* The goal of defrag() is to trick the system into reserving more 'ION memory'
  * that we can allocate when we start templating. We do this by exhausting all
@@ -106,7 +108,7 @@ int exhaust(std::vector<struct ion_data *> &chunks, int min_bytes, bool mmap) {
  */
 void defrag(int alloc_timer) {
     std::vector<struct ion_data *> defrag_chunks;
-    
+
     time_t start_time = 0;
     time_t  prev_time = 0;
     int      count = 0;
@@ -115,7 +117,7 @@ void defrag(int alloc_timer) {
     for (int i = 0; i < INTERVAL; i++) alloc_count[i] = MIN_COUNT + 1;
     int    alloc_count_index = 0;
     int len = K(4);
-    
+
     exhaust(defrag_chunks, K(64), false);
 
     if (lowmem) goto bail;
@@ -123,7 +125,7 @@ void defrag(int alloc_timer) {
     alloc_timeout = false;
     signal(SIGALRM, alloc_alarm);
     alarm(alloc_timer);
-    
+
     start_time = time(NULL);
 
     while (true) {
@@ -154,17 +156,17 @@ void defrag(int alloc_timer) {
             print("[DEFRAG] Blocks allocated last %d intervals: ", 10);
             for (int i = 9; i >= 0; i--) {
                 printf("%5d ", alloc_count[(alloc_count_index + i) % 10]);
-                if (alloc_count[i] > MIN_COUNT) 
+                if (alloc_count[i] > MIN_COUNT)
                     progress = true;
             }
-            print(" | time left: %3d | low free: %8d KB | blocks: %8d\n", 
-                        timeleft, lowfree, count);
+            print(" | time left: %3d | low free: %8d KB | blocks: %8d\n",
+                  timeleft, lowfree, count);
 
-            if (!progress) { 
+            if (!progress) {
                 print("[DEFRAG] Not enough progress\n");
                 break;
             }
-           
+
             // some devices do not report LowFree in /proc/meminfo
             if (lowfree > 0 && lowfree < MIN_LOWFREE) {
                 print("[DEFRAG] Not enough low memory\n");
@@ -175,19 +177,19 @@ void defrag(int alloc_timer) {
                 print("[DEFRAG] Timeout\n");
                 break;
             }
-            
+
             prev_count = count;
             prev_time = curr_time;
         }
         defrag_chunks.push_back(data);
     }
-   
-    print("[DEFRAG] Additionally got %d chunks of size %d KB (%d bytes in total = %d MB)\n", 
-                 count,           len,   count * len,        count * len / 1024 / 1024);
+
+    print("[DEFRAG] Additionally got %d chunks of size %d KB (%d bytes in total = %d MB)\n",
+          count,           len,   count * len,        count * len / 1024 / 1024);
 
 bail:
     ION_clean_all(defrag_chunks);
-    
+
     printf("[DEFRAG] Dumping /proc/pagetypeinfo\n");
     std::ifstream pagetypeinfo("/proc/pagetypeinfo");
     pagetypeinfo.clear();

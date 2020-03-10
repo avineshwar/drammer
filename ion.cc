@@ -44,7 +44,7 @@ int chipset;
 #define CHIPSET_MAKO        25
 #define CHIPSET_TEGRA       2
 #define CHIPSET_UNIVERSAL   1
-#define CHIPSET_KIRIN       1 
+#define CHIPSET_KIRIN       1
 #define CHIPSET_SPREADTRUM  2
 #define CHIPSET_QCT         22
 
@@ -95,7 +95,7 @@ int ION_mmap(struct ion_data *data, int prot, int flags, void *addr) {
         return -1;
         //exit(EXIT_FAILURE);
     }
-    
+
     if ( prot == -1)  prot =  PROT_READ | PROT_WRITE;
     if (flags == -1) flags = MAP_SHARED | MAP_POPULATE;
 
@@ -109,7 +109,7 @@ int ION_mmap(struct ion_data *data, int prot, int flags, void *addr) {
 }
 
 /**********************************************
- * Free a struct ion_data 
+ * Free a struct ion_data
  **********************************************/
 void ION_clean(struct ion_data *data) {
     if (data->mapping) {
@@ -135,7 +135,7 @@ void ION_clean(struct ion_data *data) {
 }
 
 /**********************************************
- * Allocate ION chunks in bulk 
+ * Allocate ION chunks in bulk
  **********************************************/
 
 /* Our java app will send a SIGUSR1 signal if the system is low on memory. This
@@ -175,9 +175,9 @@ int ION_bulk(int len, std::vector<struct ion_data *> &chunks, int max, bool mmap
         } else {
             data->mapping = NULL;
         }
-    
+
         data->hammerable_rows.clear();
-        
+
         chunks.push_back(data);
         count++;
         if (max > 0 && count >= max) break;
@@ -205,9 +205,9 @@ void ION_clean_all(std::vector<struct ion_data *> &chunks, int max) {
 void ION_get_hammerable_rows(struct ion_data * chunk) {
     if (chunk->len < (3*rowsize)) return;
     if (chunk->mapping == NULL) return;
-    for (int offset = rowsize; 
-             offset < chunk->len - rowsize; 
-             offset += rowsize) {
+    for (int offset = rowsize;
+            offset < chunk->len - rowsize;
+            offset += rowsize) {
         uintptr_t virt_row = (uintptr_t) chunk->mapping + offset;
         chunk->hammerable_rows.push_back(virt_row);
     }
@@ -226,7 +226,7 @@ void ION_init(void) {
             print("Detected chipset: Qualcomm\n");
             chipset = CHIPSET_MSM;
             break;
-        }   
+        }
         if (line.find("Exynos") != std::string::npos) {
             print("Detected chipset: Exynos\n");
             chipset = CHIPSET_EXYNOS;
@@ -284,22 +284,22 @@ void ION_init(void) {
             chipset = CHIPSET_QCT;
         }
     }
-    
+
     ion_fd = open("/dev/ion", O_RDONLY);
     if (!ion_fd) {
         perror("Could not open ion");
         exit(EXIT_FAILURE);
     }
-    
+
     int err;
     sigset_t sigset;
-    
+
     err = sigfillset(&sigset);
     if (err != 0) perror("sigfillset");
-    
-    err = sigprocmask(SIG_UNBLOCK, &sigset, NULL); 
+
+    err = sigprocmask(SIG_UNBLOCK, &sigset, NULL);
     if (err != 0) perror("sigprocmask");
-    
+
     setvbuf(stdout, NULL, _IONBF, 0);
 }
 void ION_fini(void) {
@@ -324,7 +324,7 @@ void ION_detector(void) {
         if (err) {
             printf(" -> nope (%s)\n", strerror(errno));
             continue;
-        } 
+        }
         printf(" -> ok!\n");
         handle_data.handle = allocation_data.handle;
         err = ioctl(ion_fd, ION_IOC_FREE, &handle_data);
@@ -339,7 +339,7 @@ void ION_detector(void) {
         if (err) {
             printf(" -> nope (%s)\n", strerror(errno));
             continue;
-        } 
+        }
         printf(" -> ok!\n");
         handle_data.handle = allocation_data.handle;
         err = ioctl(ion_fd, ION_IOC_FREE, &handle_data);
@@ -347,14 +347,14 @@ void ION_detector(void) {
             printf(" -> could not free (%s)\n", strerror(errno));
             continue;
         }
-        
+
         printf("...... to allocate 16MB with heap id: %2d | mask: %8x ", i, mask);
         allocation_data.len = M(16);
         err = ioctl(ion_fd, ION_IOC_ALLOC, &allocation_data);
         if (err) {
             printf(" -> nope (%s)\n", strerror(errno));
             continue;
-        } 
+        }
         printf(" -> ok!\n");
         handle_data.handle = allocation_data.handle;
         err = ioctl(ion_fd, ION_IOC_FREE, &handle_data);

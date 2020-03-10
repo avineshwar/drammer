@@ -32,12 +32,12 @@
 #include "rowsize.h"
 
 #define ROWSIZE_READCOUNT 2500000 // 2.5 million reads
-#define ROWSIZE_PAGES 64 
+#define ROWSIZE_PAGES 64
 
 #define DEFAULT_ROWSIZE K(64)
 
-std::vector<struct model> models = { 
-//  model         ro.product.name     board            platform  ion  row      generic name 
+std::vector<struct model> models = {
+//  model         ro.product.name     board            platform  ion  row      generic name
 
 // Snapdragon 820
 // {"SM-G935T",  "hero2qltetmo",     "msm8996",       "msm8996", 21,  0,      "Samsung Galaxy S7 Edge"},
@@ -45,80 +45,80 @@ std::vector<struct model> models = {
 
 // Snapdragon 810
 // {"Nexus 6P",  "angler",           "angler",        "msm8994", 21,  0,      "Huawei Nexus 6P"},
-   {"E6853",     "E6853",            "msm8994",       "msm8994", 21,  K(64), "Sony Xperia Z5"},
+    {"E6853",     "E6853",            "msm8994",       "msm8994", 21,  K(64), "Sony Xperia Z5"},
 
 // Snapdragon 808
-   {"Nexus 5X",  "bullhead",         "bullhead",      "msm8992", 21,  K(64),  "LG Nexus 5X"},
-   {"LG-H960",   "pplus_global_com", "msm8992",       "msm8992", 21,  K(64),  "LG V10"},
-   {"LG-H815",   "p1_global_com",    "msm8992",       "msm8992", 21,  K(64),  "LG G4"},
+    {"Nexus 5X",  "bullhead",         "bullhead",      "msm8992", 21,  K(64),  "LG Nexus 5X"},
+    {"LG-H960",   "pplus_global_com", "msm8992",       "msm8992", 21,  K(64),  "LG V10"},
+    {"LG-H815",   "p1_global_com",    "msm8992",       "msm8992", 21,  K(64),  "LG G4"},
 
-   {"C1905",     "cm_nicki",         "qcom",          "msm8960", 22,  K(32),  "Sony Xperia M"},
+    {"C1905",     "cm_nicki",         "qcom",          "msm8960", 22,  K(32),  "Sony Xperia M"},
 
 // Snapdragon 805
-   {"SM-G901F",  "kccat6xx",         "APQ8084",       "apq8084", 21,  K(128), "Samsung Galaxy S5 Plus"}, 
+    {"SM-G901F",  "kccat6xx",         "APQ8084",       "apq8084", 21,  K(128), "Samsung Galaxy S5 Plus"},
 // {"SM-N910V",  "trltevzw",         "APQ8084",       "apq8084", 21,  0,      "Samsung Galaxy Note 4"},
 
 // Snapdragon 800
-   {"Nexus 5",   "hammerhead",       "hammerhead",    "msm8974", 21,  K(64),  "LG Nexus 5"},
-   {"A0001",     "bacon",            "MSM8974",       "msm8974", 21,  K(128), "OnePlus One"},
-   {"SM-G870F",  "klteactivexx",     "MSM8974",       "msm8974", 21,  K(64), "Samsung Galaxy S5 Active"},
+    {"Nexus 5",   "hammerhead",       "hammerhead",    "msm8974", 21,  K(64),  "LG Nexus 5"},
+    {"A0001",     "bacon",            "MSM8974",       "msm8974", 21,  K(128), "OnePlus One"},
+    {"SM-G870F",  "klteactivexx",     "MSM8974",       "msm8974", 21,  K(64), "Samsung Galaxy S5 Active"},
 // {"SM-G900T",  "kltetmo",          "MSM8974",       "msm8974", 21,  0,      "Samsung Galaxy S5"},
 
 // Snapdragon 410:
 // {"SM-A500FU", "a5ultexx",         "MSM8916",       "msm8916", 21,  0,      "Samsung Galaxy A5"},
 // {"MotoG3",    "osprey_retus",     "msm8916",       "msm8916", 21,  0,      "Motorola Moto G 3rd Gen"},
-   {"GT-I9195I", "serranoveltexx",   "MSM8916",       "msm8916", 21,  K(32),  "Samsung Galaxy S4 Mini"},
-   {"KIW-L21",   "KIW-L21",          "KIW-L21",       "msm8916", 21,  K(32),  "Huawei Honor 5X"},
-   {"MotoE2(4G-LTE)", "surnia_reteu","msm8916",       "msm8916", 21,  K(32),  "Motorola Moto E 2nd Gen"},
-   {"MotoG3",    "osprey_reteu",     "msm8916",       "msm8916", 21,  K(32),  "Motorola Moto G 3rd Gen"},
-   {"HUAWEI RIO-L01", "RIO-L01",     "RIO-L01",       "msm8916", 21,  K(64),  "Huawei GX8/G8"},
-   {"HTC One M8s","m8qlul_htc_europe","msm8939",      "msm8916", 21,  K(64),  "HTC One M8s"},
+    {"GT-I9195I", "serranoveltexx",   "MSM8916",       "msm8916", 21,  K(32),  "Samsung Galaxy S4 Mini"},
+    {"KIW-L21",   "KIW-L21",          "KIW-L21",       "msm8916", 21,  K(32),  "Huawei Honor 5X"},
+    {"MotoE2(4G-LTE)", "surnia_reteu","msm8916",       "msm8916", 21,  K(32),  "Motorola Moto E 2nd Gen"},
+    {"MotoG3",    "osprey_reteu",     "msm8916",       "msm8916", 21,  K(32),  "Motorola Moto G 3rd Gen"},
+    {"HUAWEI RIO-L01", "RIO-L01",     "RIO-L01",       "msm8916", 21,  K(64),  "Huawei GX8/G8"},
+    {"HTC One M8s","m8qlul_htc_europe","msm8939",      "msm8916", 21,  K(64),  "HTC One M8s"},
 
 // Snapdragon 400:
-   {"XT1064",    "titan_retuaws",    "MSM8226",       "msm8226", 21,  K(32),  "Motorola Moto G 2nd Gen"},
-   {"XT1068",    "titan_retaildsds", "MSM8226",       "msm8226", 21,  K(32),  "Motorola Moto G 2nd Gen"},
+    {"XT1064",    "titan_retuaws",    "MSM8226",       "msm8226", 21,  K(32),  "Motorola Moto G 2nd Gen"},
+    {"XT1068",    "titan_retaildsds", "MSM8226",       "msm8226", 21,  K(32),  "Motorola Moto G 2nd Gen"},
 // {"LG-V410",   "e7lte_att_us",     "MSM8226",       "msm8226", 21,  0,      "LG G Pad 7.0"},
 
-   {"SM-J320FN", "j3xnltexx",        "SC9830I",       "sc8830",   2,  K(32),  "Samsung Galaxy J3 2016"},
-   {"SM-A310F", "a3xeltexx",         "universal7580", "exynos5",  4,  K(64),  "Samsung Galaxy A3 2016"}, // not sure about the rowsize...
-   {"SM-A700F", "a7altexx",          "universal5430", "exynos5",  4,  K(128), "Samsung Galaxy A7"},
-   {"SM-G920F",  "zerofltexx",       "universal7420", "exynos5",  4,  K(128), "Samsung Galaxy S6"},
-   {"SM-G935F",  "hero2ltexx",       "universal8890", "exynos5",  4,  K(256), "Samsung Galaxy S7 Edge"},
-   {"SM-G930F",  "heroltexx",        "universal8890", "exynos5",  4,  K(256), "Samsung Galaxy S7"},
+    {"SM-J320FN", "j3xnltexx",        "SC9830I",       "sc8830",   2,  K(32),  "Samsung Galaxy J3 2016"},
+    {"SM-A310F", "a3xeltexx",         "universal7580", "exynos5",  4,  K(64),  "Samsung Galaxy A3 2016"}, // not sure about the rowsize...
+    {"SM-A700F", "a7altexx",          "universal5430", "exynos5",  4,  K(128), "Samsung Galaxy A7"},
+    {"SM-G920F",  "zerofltexx",       "universal7420", "exynos5",  4,  K(128), "Samsung Galaxy S6"},
+    {"SM-G935F",  "hero2ltexx",       "universal8890", "exynos5",  4,  K(256), "Samsung Galaxy S7 Edge"},
+    {"SM-G930F",  "heroltexx",        "universal8890", "exynos5",  4,  K(256), "Samsung Galaxy S7"},
 // {"SM-T710",   "gts28wifixx",      "universal5433", "exynos5",  4,  0,      "Samsung Galaxy Tab S2 8.0"},
-   {"SM-G935F",  "hero2ltexx",       "universal8890", "exynos5",  4,  K(256), "Samsung Galaxy S7 Edge"},
-   {"SM-G930F",  "heroltexx",        "universal8890", "exynos5",  4,  K(256), "Samsung Galaxy S7"},
+    {"SM-G935F",  "hero2ltexx",       "universal8890", "exynos5",  4,  K(256), "Samsung Galaxy S7 Edge"},
+    {"SM-G930F",  "heroltexx",        "universal8890", "exynos5",  4,  K(256), "Samsung Galaxy S7"},
 // {"SM-T710",   "gts28wifixx",      "universal5433", "exynos5",  4,  0,      "Samsung Galaxy Tab S2 8.0"},
 // {"SM-T810",   "gts210wifixx",     "universal5433", "exynos5",  4,  0,      "Samsung Galaxy Tab S2 9.7"},
-   { "SM-N910C", "treltexx",         "universal5433", "exynos5",  4,  K(64),  "Samsung Galaxy Note 4"},
+    { "SM-N910C", "treltexx",         "universal5433", "exynos5",  4,  K(64),  "Samsung Galaxy Note 4"},
 
- // Snapdragon S4
+// Snapdragon S4
 // {"AOSP on Mako", "full_mako",     "MAKO",          "msm8960", 21,  0,      ""},
 
-   {"ALE-L21",   "ALE-L21",          "BalongV8R1SFT", "hi6210sft",1,  K(32),   "Huawei P8 Lite"},
-   {"EVA-L09",   "EVA-L09",          "EVA-L09",       "hi3650",  1,   K(64),   "Huawei P9"},
-   {"HUAWEI VNS-L31", "VNS-L31",     "VNS-L31",       "hi6250",   1,  K(32),   "Huawei P9 Lite"},
+    {"ALE-L21",   "ALE-L21",          "BalongV8R1SFT", "hi6210sft",1,  K(32),   "Huawei P8 Lite"},
+    {"EVA-L09",   "EVA-L09",          "EVA-L09",       "hi3650",  1,   K(64),   "Huawei P9"},
+    {"HUAWEI VNS-L31", "VNS-L31",     "VNS-L31",       "hi6250",   1,  K(32),   "Huawei P9 Lite"},
 
-   {"NEO6_LTE", "NEO6_LTE",          "",              "mt6735",   1,  K(32),   "Odys Neo 6"},
+    {"NEO6_LTE", "NEO6_LTE",          "",              "mt6735",   1,  K(32),   "Odys Neo 6"},
 
-   {"HTC Desire 830 dual sim","a51cml_dtul_00401","", "mt6753",   1,  K(64),   "HTC Desire 830"},
+    {"HTC Desire 830 dual sim","a51cml_dtul_00401","", "mt6753",   1,  K(64),   "HTC Desire 830"},
 
-   {"E5603",    "E5603",             "",              "mt6795",   1,  K(64),   "Sony Xperia M5"}
+    {"E5603",    "E5603",             "",              "mt6795",   1,  K(64),   "Sony Xperia M5"}
 
- 
- // MT6572
+
+// MT6572
 // {"Goophone i5C", "mbk72_wet_jb3", "mbk72_wet_jb3", "",        21,  0,      "Goophone i5C"},
 
- // MT8735
+// MT8735
 
 
 };
 
 int rowsize;
-    
+
 uint64_t compute_mad(std::vector<uint64_t> &v) {
-    uint64_t median = compute_median(v); 
-    
+    uint64_t median = compute_median(v);
+
     std::vector<uint64_t> absolute_deviations;
     for (auto it : v) {
         if (it < median) absolute_deviations.push_back( median - it );
@@ -179,8 +179,8 @@ struct model *get_model(int *familiarity) {
     print("[RS] ro.board.platform: %s\n", platform.c_str());
 
     for (std::vector<struct model>::iterator it  = models.begin();
-                                             it != models.end();
-                                           ++it) {
+            it != models.end();
+            ++it) {
         struct model *m = &(*it);
         if (m->model == model || m->name == name) {
             print("[RS] known model: %s\n", m->generic_name.c_str());
@@ -190,8 +190,8 @@ struct model *get_model(int *familiarity) {
     }
 
     for (std::vector<struct model>::iterator it  = models.begin();
-                                             it != models.end();
-                                           ++it) {
+            it != models.end();
+            ++it) {
         struct model *m = &(*it);
         if (m->board == board || m->platform == platform) {
             printf("[RS] familiar model: %s\n", m->generic_name.c_str());
@@ -226,7 +226,7 @@ int RS_autodetect(void) {
     }
     data.len = K(256);
     ION_mmap(&data);
-   
+
     print("[RS] Reading from page 0 and page x (x = 0..%d)\n",ROWSIZE_PAGES);
     std::vector<uint64_t> deltas;
     int page1 = 0;
@@ -291,7 +291,8 @@ int RS_autodetect(void) {
         print("[RS] Sequences: ");
         std::vector<uint64_t> seq_normal;
         std::vector<uint64_t> seq_outlier;
-        int sn = 0; int so = 0;
+        int sn = 0;
+        int so = 0;
         for (auto it : deltas) {
             if (it < q1 - 1.5*iqr || it > q3 + 1.5*iqr) {
                 if (so != 0) {
@@ -310,7 +311,7 @@ int RS_autodetect(void) {
             }
         }
         printf("\n");
-    
+
         rowsize = (compute_median(seq_normal) + compute_median(seq_outlier)) * 4096;
     }
 
